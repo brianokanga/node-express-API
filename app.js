@@ -4,17 +4,30 @@ const express = require('express');
 const e = require('express');
 
 const app = express();
-
 app.use(express.json()); //simple middleware
 
+// Custom middleware function
+app.use((req, res, next) => {
+	console.log(`Hello from the middleware!!`);
+	next();
+});
+
+app.use((req, res, next) => {
+	req.requestTime = new Date().toString();
+	next();
+});
+
+//  Reading data from the file
 const tours = JSON.parse(
 	fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 // TOURS ROUTES HANDLERS
 //get all tours route handler
 const getAllTours = (req, res) => {
+	console.log(req.requestTime);
 	res.status(200).json({
 		status: 'success',
+		requestAt: req.requestTime,
 		results: tours.length,
 		data: {
 			tours,
