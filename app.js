@@ -164,30 +164,28 @@ const deleteUser = (req, res) => {
 };
 
 // 3. ROUTES
+const tourRouter = express.Router();
+const userRouter = express.Router();
 
-// i)TOURS
+// i)TOURS routes definitions
 
 //1. '/api/v1/tours'
-app.route('/api/v1/tours').get(getAllTours).post(createTour);
+tourRouter.route('/').get(getAllTours).post(createTour);
 
 //2. '/api/v1/tours/:id'
-app
-	.route('/api/v1/tours/:id')
-	.get(getTour)
-	.patch(updateTour)
-	.delete(deleteTour);
+tourRouter.route('/:id').get(getTour).patch(updateTour).delete(deleteTour);
 
-// ii) USERS
+// ii) USERS routes definitions
 
 //1. '/api/v1/users'
-app.route('/api/v1/users').get(getAllUsers).post(createUser);
+userRouter.route('/').get(getAllUsers).post(createUser);
 
 //2. '/api/v1/tours/:id'
-app
-	.route('/api/v1/users/:id')
-	.get(getUser)
-	.patch(updateUser)
-	.delete(deleteUser);
+userRouter.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
+
+// Mounting the routers
+app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/users', userRouter);
 
 // 4. START THE SERVER
 const port = 3000;
