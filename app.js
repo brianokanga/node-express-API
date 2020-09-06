@@ -9,7 +9,8 @@ const app = express();
 
 // Third party logger middleware
 app.use(morgan('dev'));
-//simple middleware
+
+// Simple middleware
 app.use(express.json());
 
 // Custom middleware functionS
@@ -30,8 +31,8 @@ const tours = JSON.parse(
 
 // 2. ROUTES HANDLERS
 
-// TOURS
-//get all tours route handler
+// I) TOURS
+// get all tours route handler
 const getAllTours = (req, res) => {
 	console.log(req.requestTime);
 	res.status(200).json({
@@ -120,13 +121,51 @@ const deleteTour = (req, res) => {
 	});
 };
 
+// II) USERS
+
+// Get all tours route handler
+const getAllUsers = (req, res) => {
+	res.status(500).json({
+		status: 'success',
+		message: 'This route is not yet defined!',
+	});
+};
+
+// Get User route handler
+const getUser = (req, res) => {
+	res.status(500).json({
+		status: 'success',
+		message: 'This route is not yet defined!',
+	});
+};
+
+// Create User route handler
+const createUser = (req, res) => {
+	res.status(500).json({
+		status: 'success',
+		message: 'This route is not yet defined!',
+	});
+};
+
+// Update user route handler
+const updateUser = (req, res) => {
+	res.status(500).json({
+		status: 'success',
+		message: 'This route is not yet defined!',
+	});
+};
+
+// Delete User route handler
+const deleteUser = (req, res) => {
+	res.status(500).json({
+		status: 'success',
+		message: 'This route is not yet defined!',
+	});
+};
+
 // 3. ROUTES
 
-// app.get('/api/v1/tours', getAllTours);
-// app.post('/api/v1/tours', createTour);
-// app.get('/api/v1/tours/:id', getTour);
-// app.patch('/api/v1/tour/:id', updateTour);
-// app.delete('/api/v1/tour/:id', deleteTour);
+// i)TOURS
 
 //1. '/api/v1/tours'
 app.route('/api/v1/tours').get(getAllTours).post(createTour);
@@ -137,6 +176,18 @@ app
 	.get(getTour)
 	.patch(updateTour)
 	.delete(deleteTour);
+
+// ii) USERS
+
+//1. '/api/v1/users'
+app.route('/api/v1/users').get(getAllUsers).post(createUser);
+
+//2. '/api/v1/tours/:id'
+app
+	.route('/api/v1/users/:id')
+	.get(getUser)
+	.patch(updateUser)
+	.delete(deleteUser);
 
 // 4. START THE SERVER
 const port = 3000;
