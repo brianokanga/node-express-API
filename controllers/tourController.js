@@ -1,15 +1,13 @@
 const fs = require('fs');
 const Tour = require('./../models/tourModel');
 
-
-
 // i) Routes handlers
 // get all tours route handler
 exports.getAllTours = (req, res) => {
   console.log(req.requestTime);
   res.status(200).json({
     status: 'success',
-    requestAt: req.requestTime,
+    requestAt: req.requestTime
     // results: tours.length,
     // data: {
     //   tours,
@@ -32,23 +30,33 @@ exports.getTour = (req, res) => {
 };
 
 // Create New Tour route handler
-exports.createTour = (req, res) => {
-  res.status(201).json({
-    status: 'success',
-    // data: {
-    //   tour: newTour,
-    // },
-  });
-};
+exports.createTour = async (req, res) => {
+  try {
+    const newTour = await Tour.create(req.body);
 
+    res.status(201).json({
+      status: 'success',
+      data: {
+        tour: newTour,
+      },
+    });
+
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: 'Invalid data sent!',
+    })
+  }
+
+};
 
 // Update a Tour route handler
 exports.updateTour = (req, res) => {
   res.status(200).json({
     status: 'success',
     data: {
-      tour: '<Updated tour here...>',
-    },
+      tour: '<Updated tour here...>'
+    }
   });
 };
 
@@ -56,6 +64,6 @@ exports.updateTour = (req, res) => {
 exports.deleteTour = (req, res) => {
   res.status(204).json({
     status: 'success',
-    data: null,
+    data: null
   });
 };

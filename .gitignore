@@ -6,4 +6,4 @@ dist
 .env
 ./server/.DS_Store
 .vscode/ 
-config.env
+config.env 
