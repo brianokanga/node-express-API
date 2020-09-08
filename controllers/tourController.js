@@ -3,20 +3,6 @@ const Tour = require('./../models/tourModel');
 
 
 
-// check body param middleware
-exports.checkBody = (req, res, next) => {
-  // check if body contains name and price property
-  if (!req.body.name || !req.body.price) {
-    // if not , send back 400
-    return res.status(400).json({
-      status: 'fail',
-      message: 'missing name or price',
-    });
-  }
-
-  next();
-};
-
 // i) Routes handlers
 // get all tours route handler
 exports.getAllTours = (req, res) => {
