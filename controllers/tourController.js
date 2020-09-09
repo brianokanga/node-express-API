@@ -11,6 +11,15 @@ const {
   Query
 } = require('mongoose');
 
+
+// MIDDLEWARE FOR Top-5-cheap-Tours
+exports.aliasTopTours = (req, res, next) => {
+  req.query.limit = '5';
+  req.query.sort = '-ratingsAverage,price';
+  req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
+  next();
+}
+
 // i) Routes handlers
 // get all tours route handler
 // find() returns a promise
