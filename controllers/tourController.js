@@ -26,14 +26,17 @@ exports.getAllTours = async (req, res) => {
 
     //2. Advanced filtering
     let queryStr = JSON.stringify(queryObj);
-    conqueryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `${match}`);
+    conqueryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
     console.log(JSON.parse(queryStr));
 
 
-    // {difficulty: 'easy', duration: { gte: '5' } }
+
 
     // method 2
     // const query = Tour.find().where('duration').equals(5).where('difficulty').equals('easy');
+
+    // if (req.query.sort)
+
 
     const query = Tour.find(queryObj);
 
