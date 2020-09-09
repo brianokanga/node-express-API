@@ -4,28 +4,38 @@ const {
   find,
   findById
 } = require('./../models/tourModel');
+const {
+  match
+} = require('assert');
 
 // i) Routes handlers
 // get all tours route handler
 // find() returns a promise
 exports.getAllTours = async (req, res) => {
   try {
+    console.log(req.query);
+    //1. BUILD A QUERY
+    //1. Filtering
+
+    //  method 1
     const queryObj = {
       ...req.query
     };
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
     excludedFields.forEach(el => delete queryObj[el]);
 
-    console.log(req.query, queryObj);
+    //2. Advanced filtering
+    let queryStr = JSON.stringify(queryObj);
+    conqueryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `${match}`);
+    console.log(JSON.parse(queryStr));
 
 
-    // FILTERING
-    // BUILD A QUERY
-    //  method 1
-    const query = Tour.find(queryObj);
+    // {difficulty: 'easy', duration: { gte: '5' } }
 
     // method 2
     // const query = Tour.find().where('duration').equals(5).where('difficulty').equals('easy');
+
+    const query = Tour.find(queryObj);
 
     // EXECUTE A QUERY
     const tours = await query;
