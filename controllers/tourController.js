@@ -1,5 +1,9 @@
 const fs = require('fs');
 const Tour = require('./../models/tourModel');
+const {
+  find,
+  findById
+} = require('./../models/tourModel');
 
 // i) Routes handlers
 // get all tours route handler
@@ -23,17 +27,23 @@ exports.getAllTours = async (req, res) => {
 };
 
 // Get one tour route handler
-exports.getTour = (req, res) => {
-  console.log(req.params);
-  const id = req.params.id * 1;
+// findById(req.params.id) <=> findOne({ _id: req.params.id})
+exports.getTour = async (req, res) => {
+  try {
+    const tour = await Tour.findById(req.params.id)
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour,
+      },
+    });
 
-  // const tour = tours.find(el => el.id === id);
-  // res.status(200).json({
-  //   status: 'success',
-  //   data: {
-  //     tour,
-  //   },
-  // });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err,
+    })
+  }
 };
 
 // Create New Tour route handler
