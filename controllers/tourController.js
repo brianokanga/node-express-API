@@ -7,6 +7,9 @@ const {
 const {
   match
 } = require('assert');
+const {
+  Query
+} = require('mongoose');
 
 // i) Routes handlers
 // get all tours route handler
@@ -26,19 +29,18 @@ exports.getAllTours = async (req, res) => {
 
     //2. Advanced filtering
     let queryStr = JSON.stringify(queryObj);
-    conqueryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
     console.log(JSON.parse(queryStr));
-
-
 
 
     // method 2
     // const query = Tour.find().where('duration').equals(5).where('difficulty').equals('easy');
 
-    // if (req.query.sort)
+    let query = Tour.find(JSON.parse(queryStr));
 
-
-    const query = Tour.find(queryObj);
+    if (req.query.sort) {
+      query = query.sort(req.query.sort)
+    }
 
     // EXECUTE A QUERY
     const tours = await query;
