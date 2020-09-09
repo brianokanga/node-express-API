@@ -1,6 +1,9 @@
 const fs = require('fs');
 const Tour = require('./../models/tourModel');
-const { find, findById } = require('./../models/tourModel');
+const {
+  find,
+  findById
+} = require('./../models/tourModel');
 
 // i) Routes handlers
 // get all tours route handler
@@ -56,7 +59,7 @@ exports.createTour = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: 'fail',
-      message: 'Invalid data sent!'
+      message: err
     });
   }
 };
