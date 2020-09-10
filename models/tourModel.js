@@ -93,7 +93,7 @@ tourSchema.pre('save', function (next) {
 // });
 
 // 2. QUERY MIDDLEWARE
-// The tihs keyword pointa to the current query
+// The this keyword pointa to the current query
 // regex to worj on all query funcs that start with find
 tourSchema.pre(/^find/, function (next) {
   this.find({
@@ -106,9 +106,23 @@ tourSchema.pre(/^find/, function (next) {
   next();
 });
 
+// Query post middleware
 tourSchema.post(/^find/, function (docs, next) {
   console.log(docs);
   console.log(`Query took ${Date.now() - this.start} milliseconds`);
+  next();
+});
+// 2. AGGREGATION  MIDDLEWARE
+// emoving secretTour using aggretion middleware
+tourSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({
+    $match: {
+      secretTOur: {
+        $ne: true
+      }
+    }
+  })
+  console.log(this.pipeline());
   next();
 });
 
