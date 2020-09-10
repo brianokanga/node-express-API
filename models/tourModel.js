@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
+const validator = require('validator');
 // Schema
 const tourSchema = new mongoose.Schema(
   {
@@ -10,6 +11,7 @@ const tourSchema = new mongoose.Schema(
       trim: true,
       maxlength: [40, 'A tour name must have less or equal to 40 characters'],
       minlength: [10, 'A tour name must have more or equal to 10 characters']
+      // validate: [validator.isAlpha, 'Tour name must only contain characters']
     },
     slug: String,
     duration: {
@@ -44,11 +46,17 @@ const tourSchema = new mongoose.Schema(
     },
     priceDiscount: {
       type: Number,
-      summary: {
-        type: Number,
-        trim: true,
-        required: [true, 'A tour must have a description']
+      validate: {
+        validator: function(val) {
+          return val < this.price;
+        },
+        message: 'Discount price ({VALUE}) should be below the regular price'
       }
+    },
+    summary: {
+      type: String,
+      trim: true,
+      required: [true, 'A tour must have a description']
     },
     imageCover: {
       type: String,
@@ -83,6 +91,7 @@ tourSchema.virtual('durationWeeks').get(function() {
 
 // MONGOOSE MIDDLEWARES
 // 1. DOCUMENT MIDDLEWARE: runs before save() amd .create()
+// Doesnt work on Update
 // pre-document middleware function(pre save hook)
 tourSchema.pre('save', function(next) {
   this.slug = slugify(this.name, {
