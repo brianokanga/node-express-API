@@ -7,8 +7,11 @@ const router = express.Router();
 // param middleware
 // router.param ('id', tourController.checkID);
 
-// ALIAS 
+// ALIAS route 
 router.route('/top-5-cheap').get(tourController.aliasTopTours, tourController.getAllTours);
+
+// AGRREGATION route
+router.route('/tour-stats').get(tourController.getTourStats);
 
 //1. '/api/v1/tours'
 router

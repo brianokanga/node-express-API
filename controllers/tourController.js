@@ -1,15 +1,13 @@
 const Tour = require('./../models/tourModel');
 const APIFeatures = require('./../utils/apiFeatures');
 
-
-
 // MIDDLEWARE FOR Top-5-cheap-Tours
 exports.aliasTopTours = (req, res, next) => {
   req.query.limit = '5';
   req.query.sort = '-ratingsAverage,price';
   req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
   next();
-}
+};
 
 // i) Routes handlers
 // get all tours route handler
@@ -107,6 +105,69 @@ exports.deleteTour = async (req, res) => {
     res.status(204).json({
       status: 'success',
       data: null
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err
+    });
+  }
+};
+
+exports.getTourStats = async (req, res) => {
+  try {
+    const stats = await Tour.aggregate([{
+        $match: {
+          ratingsAverage: {
+            $gte: 4.5
+          }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            $toUpper: '$difficulty'
+          },
+          numTours: {
+            $sum: 1
+          },
+          numRatings: {
+            $sum: '$ratingsQuantity'
+          },
+          avgRatings: {
+            $avg: '$ratingsAverage'
+          },
+          avgPrice: {
+            $avg: '$price'
+          },
+          minPrice: {
+            $min: '$price'
+          },
+          maxPrice: {
+            $max: '$price'
+          }
+        }
+      },
+      {
+        $sort: {
+          avgPrice: 1
+        }
+      },
+      // {
+      //   $match: {
+      //     _id: {
+      //       $ne: 'EASY'
+      //     }
+      //   }
+      // }
+
+    ]);
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        stats
+      }
     });
   } catch (err) {
     res.status(404).json({
