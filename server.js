@@ -7,7 +7,6 @@ dotnev.config({
 });
 
 // DATABASE CONNECTIONS
-
 // Local database
 // const DB = process.env.DATABASE_LOCAL;
 // mongoose
