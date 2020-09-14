@@ -27,14 +27,13 @@ mongoose
   .connect(DB, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useFindAndModify: false
+    useFindAndModify: false,
+    useUnifiedTopology: true
   })
   .then(() => console.log('DB connection successful'))
   .catch(err => {
     console.log('ERROR', err);
   });
-
-
 
 // 1. START THE SERVER
 const port = process.env.PORT || 3000;

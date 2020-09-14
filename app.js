@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const { route } = require('./routes/tourRoutes');
@@ -9,7 +10,7 @@ const app = express();
 // 1. MIDDLEWARES
 // The order of middleware determines how they are used
 if (process.env.NODE_ENV === 'development') {
-	app.use(morgan('dev'));
+  app.use(morgan('dev'));
 }
 
 // Third party logger middleware
@@ -21,6 +22,12 @@ app.use(express.json());
 // middleware for serving static files
 app.use(express.static(`${__dirname}/public`));
 
+// template engine
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
+// set static folder
+app.use(express.static(path.join(__dirname, 'public')));
 // Custom middleware functionS
 // app.use ((req, res, next) => {
 //   console.log (`Hello from the middleware!!`);
@@ -28,8 +35,8 @@ app.use(express.static(`${__dirname}/public`));
 // });
 
 app.use((req, res, next) => {
-	req.requestTime = new Date().toString();
-	next();
+  req.requestTime = new Date().toString();
+  next();
 });
 
 // 2. ROUTES HANDLERS
@@ -37,6 +44,9 @@ app.use((req, res, next) => {
 // 3. ROUTES
 
 // Mounting the routers
+app.get('/', (req, res) => {
+  res.status(200).render('base');
+});
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
