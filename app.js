@@ -28,6 +28,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // set static folder
 app.use(express.static(path.join(__dirname, 'public')));
+
 // Custom middleware functionS
 // app.use ((req, res, next) => {
 //   console.log (`Hello from the middleware!!`);
@@ -44,8 +45,13 @@ app.use((req, res, next) => {
 // 3. ROUTES
 
 // Mounting the routers
+
+// views
 app.get('/', (req, res) => {
-  res.status(200).render('base');
+  res.status(200).render('base', {
+    tour: 'The Forest Hoker', //local variables
+    user: 'Brian'
+  });
 });
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
